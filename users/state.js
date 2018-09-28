@@ -11,7 +11,7 @@ const stateSchema = new mongoose.Schema({
     description: String
 });
 
-const State = mongoose.model('State',stateSchema);
+const State = mongoose.model('State',stateSchema,{ collection: 'states' });
 
 exports.stateSchema = stateSchema;
 exports.State = State;

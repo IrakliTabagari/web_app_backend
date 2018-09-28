@@ -43,7 +43,7 @@ function validateUser(user){
 }
 
 //User Class from Schema
-const User = mongoose.model('User',userSchema);
+const User = mongoose.model('User',userSchema,{ collection: 'users' });
 
 exports.User = User;
 exports.userSchema = userSchema;

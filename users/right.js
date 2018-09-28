@@ -11,7 +11,7 @@ const rightSchema = new mongoose.Schema({
     description: String
 });
 
-const Right = mongoose.model('Right',rightSchema);
+const Right = mongoose.model('Right',rightSchema,{ collection: 'rights' });
 
 exports.rightSchema = rightSchema;
 exports.Right = Right;

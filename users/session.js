@@ -23,7 +23,7 @@ const sessionSchema = new mongoose.Schema({
 /*** 1. Validate sessionId  */
 
 //Session Class from Schema
-const Session = mongoose.model('Session', sessionSchema);
+const Session = mongoose.model('Session', sessionSchema,{ collection: 'sessions' });
 
 exports.Session = Session;
 exports.sessionSchema = sessionSchema;
