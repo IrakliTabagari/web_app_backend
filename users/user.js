@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
     rights:[{
         type: rightSchema    
     }]
-});
+},{ collection: "users" });
 
 function validateUser(user){
     const schema = {
@@ -43,7 +43,7 @@ function validateUser(user){
 }
 
 //User Class from Schema
-const User = mongoose.model('User',userSchema,{ collection: 'users' });
+const User = mongoose.model('User',userSchema);
 
 exports.User = User;
 exports.userSchema = userSchema;

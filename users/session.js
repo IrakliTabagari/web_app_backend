@@ -18,12 +18,12 @@ const sessionSchema = new mongoose.Schema({
     state: {
         type: stateSchema
     }
-});
+},{ collection: "sessions" });
 
 /*** 1. Validate sessionId  */
 
 //Session Class from Schema
-const Session = mongoose.model('Session', sessionSchema,{ collection: 'sessions' });
+const Session = mongoose.model('Session', sessionSchema);
 
 exports.Session = Session;
 exports.sessionSchema = sessionSchema;

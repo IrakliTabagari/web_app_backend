@@ -9,9 +9,9 @@ const rightSchema = new mongoose.Schema({
         //unique: true
     },
     description: String
-});
+},{ collection: "rights" });
 
-const Right = mongoose.model('Right',rightSchema,{ collection: 'rights' });
+const Right = mongoose.model('Right',rightSchema);
 
 exports.rightSchema = rightSchema;
 exports.Right = Right;

@@ -9,9 +9,9 @@ const stateSchema = new mongoose.Schema({
         //unique: true
     },
     description: String
-});
+},{ collection: "states" });
 
-const State = mongoose.model('State',stateSchema,{ collection: 'states' });
+const State = mongoose.model('State',stateSchema);
 
 exports.stateSchema = stateSchema;
 exports.State = State;
