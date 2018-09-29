@@ -1,6 +1,7 @@
 const express = require('./node_modules/express');
 const userService = require('./users/userService');
 const userRightService = require('./users/userRightService');
+const createDBService = require('./users/createDBService');
 
 const Joi = require('./node_modules/joi');
 const mongoose = require('./node_modules/mongoose');
@@ -12,9 +13,11 @@ const server = express();
 server.use(express.json());
 server.use('/api/users', userService);
 server.use('/api/userRights', userRightService);
+server.use('/api/db', createDBService);
 
-mongoose.connect('mongodb://localhost/fitness')
-    .then(() => console.log('connected to mongodb/fitness Database'))
+
+mongoose.connect('mongodb://localhost/appdb')
+    .then(() => console.log('connected to mongodb/appdb Database'))
     .catch(err => console.log('Could not connect to mongodb', err));
 
 
