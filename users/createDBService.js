@@ -7,9 +7,10 @@ const { User, validateUser } = require('./user');
 const { State } = require('./state');
 const { Session } = require('./session');
 const { Right } = require('./right');
+const { asyncMiddleware } = require('../middleware/asyncMiddleware');
 
 // Login
-router.post('/createDB', async (req, res) => {
+router.post('/createDB', asyncMiddleware(async (req, res) => {
     // States
     let activeState = new State({
         name : "Active",
@@ -55,6 +56,6 @@ router.post('/createDB', async (req, res) => {
     });
     await user.save();
     res.send(user);
-});
+}));
 
 module.exports = router;

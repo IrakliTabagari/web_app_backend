@@ -15,14 +15,18 @@ const {
     updateUserRights
 } = require('./userRightController');
 
+const { asyncMiddleware } = require('../middleware/asyncMiddleware');
+
+
+
 //get all rights
 router.get('/', [checkSession, getRightsRight], 
-    getAllRights
+    asyncMiddleware(getAllRights)
 );
 
 // update user's rights
 router.put('/:id', [checkSession, getUserRight, updateUserRightsRight], 
-    updateUserRights
+    asyncMiddleware(updateUserRights)
 );
 
 

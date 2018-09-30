@@ -25,46 +25,48 @@ const {
     changePassword,
     resetPassword
 } = require('./userController');
+// import asyncMiddleware for handling errors
+const { asyncMiddleware } = require('../middleware/asyncMiddleware');
 
 
 //get all users
 router.get('/', [checkSession, getUsersRight], 
-    getUsers
+    asyncMiddleware(getUsers)
 );
 
 //get user by id
 router.get('/:id', [checkSession, getUserRight], 
-    getUserById
+    asyncMiddleware(getUserById)
 );
 
 // Login
 router.post('/login', 
-    login
+    asyncMiddleware(login)
 );
 
 //insert new User
 router.post('/', [checkSession, addUserRight], 
-    addUser
+    asyncMiddleware(addUser)
 );
 
 //update user
 router.put('/:id', [checkSession, getUserRight, updateUserRight], 
-    updateUser
+    asyncMiddleware(updateUser)
 );
 
 //delete user
 router.delete('/:id', [checkSession, getUserRight, deleteUserRight], 
-    deleteUser
+    asyncMiddleware(deleteUser)
 );
 
 //change password
 router.post('/changePassword', [checkSession, changePasswordRight], 
-    changePassword
+    asyncMiddleware(changePassword)
 );
 
 //reset password
 router.post('/resetPassword', [checkSession, resetPasswordRight], 
-    resetPassword
+    asyncMiddleware(resetPassword)
 );
 
 
