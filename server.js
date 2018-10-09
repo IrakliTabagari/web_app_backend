@@ -15,7 +15,7 @@ server.use(express.json());
 server.use('/api/users', userService);
 server.use('/api/userRights', userRightService);
 server.use('/api/db', createDBService);
-server.get('/', (req, res) => res.send('<script> window.location.replace("http://stackoverflow.com");</script>'));
+server.get('/', (req, res) => res.send('<script> window.location.replace("http://localhost:4200/'));
 server.use(error);
 
 mongoose.connect('mongodb://localhost/appdb')
