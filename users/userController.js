@@ -24,6 +24,10 @@ async function getUserById(req, res){
 async function login(req, res){
     // hashing password
 
+    if(!req.body.userName || !req.body.password){ 
+        return res.status(400).send('invalid request');
+    }
+
     let user = await User.findOne({ userName: req.body.userName});
     let validPassword = await bcrypt.compare(req.body.password, user.password);
     
