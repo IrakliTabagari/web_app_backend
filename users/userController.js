@@ -29,6 +29,10 @@ async function login(req, res){
     }
 
     let user = await User.findOne({ userName: req.body.userName});
+    if(!user){ 
+        return res.status(400).send({warning: 'invalid username or password'});
+    }
+
     let validPassword = await bcrypt.compare(req.body.password, user.password);
     
     if(!user || !validPassword || user.state.name !== "Active") return res.status(404).send('User with this userName and password does not exists');
