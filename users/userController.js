@@ -41,7 +41,9 @@ async function login(req, res){
     //newSession.state = activeState;
     
     await newSession.save();
-    res.send(newSession._id);
+    newSession.user.password = "";
+    //console.log(req);
+    res.send(newSession);
 }
 
 // get hashed password
