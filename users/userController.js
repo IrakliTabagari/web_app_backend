@@ -54,6 +54,30 @@ async function login(req, res){
     res.send(newSession);
 }
 
+
+// logOut
+async function logOut(req, res){
+    // hashing password
+
+    if(!req.get('sessionId') || req.get('userName')){ 
+        return res.status(400).send('invalid request');
+    }
+
+    let session = await Session.findById(req.get('sessionId'));
+    let now = new Date();
+    let inactiveState = await State.findOne({ name: "Inactive" });
+
+    if(session && session.endDate < now && session.state.name === "Active"){
+        await Session.findByIdAndUpdate(session._id,
+            {
+                state: inactiveState
+            }, { new: true });
+        return res.send(session);
+    }else{
+        return  res.status(404).send('Session with this id or username does not exists');
+    }    
+}
+
 // get hashed password
 async function getHashedPass(req, res){
     // hashing password
@@ -72,9 +96,8 @@ async function getHashedPass(req, res){
 
 //insert new User
 async function addUser(req, res){
-    
-    const { error } = await validateUser(req.body);
-    if(error) return res.status(400).send(error.details[0].message);
+    //const error = await validateUser(req.body);
+    //if(error) return res.status(400).send(error.details[0].message);
         
     let user = await User.findOne({ userName: req.body.userName });
     if(user) return res.status(400).send('User with this user name already exists');
@@ -86,7 +109,8 @@ async function addUser(req, res){
 
 	// hashing password
 	const salt = await bcrypt.genSalt(10);
-	const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    
 
     let newUser = new User({
         userName: req.body.userName,
@@ -221,6 +245,7 @@ async function resetPassword(req, res){
 exports.getUsers        = getUsers;
 exports.getUserById     = getUserById;
 exports.login           = login;
+exports.logOut          = logOut;
 exports.getHashedPass   = getHashedPass;
 exports.addUser         = addUser;
 exports.updateUser      = updateUser;

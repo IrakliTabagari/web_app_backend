@@ -18,6 +18,7 @@ const {
     getUsers, 
     getUserById, 
     login,
+    logOut,
     getHashedPass,
     addUser,
     updateUser,
@@ -43,6 +44,12 @@ router.get('/:id', [checkSession, getUserRight],
 router.post('/login', 
     asyncMiddleware(login)
 );
+
+// Logout
+router.delete('/logout', 
+    asyncMiddleware(logOut)
+);
+
 
 //insert new User
 router.post('/', [checkSession, addUserRight], 
