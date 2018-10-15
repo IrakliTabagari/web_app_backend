@@ -57,18 +57,16 @@ async function login(req, res){
 
 // logOut
 async function logOut(req, res){
-    // hashing password
-
-    if(!req.get('sessionId') || req.get('userName')){ 
+    if(!req.body._id || !req.body.user.userName){ 
         return res.status(400).send('invalid request');
     }
 
-    let session = await Session.findById(req.get('sessionId'));
+    let session = await Session.findById(req.body._id.toString());
     let now = new Date();
     let inactiveState = await State.findOne({ name: "Inactive" });
 
-    if(session && session.endDate < now && session.state.name === "Active"){
-        await Session.findByIdAndUpdate(session._id,
+    if(session && session.endDate > now && session.state.name === "Active"){
+        session = await Session.findByIdAndUpdate(session._id,
             {
                 state: inactiveState
             }, { new: true });

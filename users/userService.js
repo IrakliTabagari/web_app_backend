@@ -46,7 +46,7 @@ router.post('/login',
 );
 
 // Logout
-router.delete('/logout', 
+router.post('/logout', 
     asyncMiddleware(logOut)
 );
 
