@@ -98,10 +98,10 @@ async function addUser(req, res){
     //if(error) return res.status(400).send(error.details[0].message);
         
     let user = await User.findOne({ userName: req.body.userName });
-    if(user) return res.status(400).send('User with this user name already exists');
+    if(user) return res.status(400).send({warning: 'User with this user name already exists'});
 
     user = await User.findOne({ email: req.body.email });
-    if(user) return res.status(400).send('User with this email already exists');
+    if(user) return res.status(400).send({warning: 'User with this email already exists'});
 
     let state = await State.findOne({ name: "Active" });
 
