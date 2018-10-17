@@ -85,7 +85,7 @@ async function deleteUserRight(req, res, next){
 	let session = await Session.findById(req.get('sessionId'));
 
 	if(session.user.rights.length<1){
-		return res.status(401).send('Current user daes not have right to add new user');		
+		return res.status(401).send('Current user daes not have right to delete user');		
 	}
 
 	let right; 
@@ -94,7 +94,26 @@ async function deleteUserRight(req, res, next){
 	});
 
 	if(!right){
-		res.status(401).send('Current user daes not have right to add new user');
+		res.status(401).send('Current user daes not have right to delete user');
+	}else {
+		next();
+	}
+}
+
+async function activateUserRight(req, res, next){
+	let session = await Session.findById(req.get('sessionId'));
+
+	if(session.user.rights.length<1){
+		return res.status(401).send('Current user daes not have right to activate user');		
+	}
+
+	let right; 
+	session.user.rights.forEach(userRight => {
+		if(userRight.name === 'activateUser') right = userRight;
+	});
+
+	if(!right){
+		res.status(401).send('Current user daes not have right to activate user');
 	}else {
 		next();
 	}
@@ -224,4 +243,5 @@ exports.addRightsToUserRight = addRightsToUserRight;
 exports.deleteRightFromUserRight = deleteRightFromUserRight;
 exports.updateUserRightsRight = updateUserRightsRight;
 exports.resetPasswordRight = resetPasswordRight;
-exports.changePasswordRight = changePasswordRight
+exports.changePasswordRight = changePasswordRight;
+exports.activateUserRight = activateUserRight;

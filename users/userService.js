@@ -7,6 +7,7 @@ const {
     getUsersRight, 
     getUserRight,
     deleteUserRight,
+    activateUserRight,
     updateUserRight,
     //addRightsToUserRight,
     //deleteRightFromUserRight
@@ -23,6 +24,7 @@ const {
     addUser,
     updateUser,
     deleteUser,
+    activateUse,
     changePassword,
     resetPassword
 } = require('./userController');
@@ -64,6 +66,11 @@ router.put('/:id', [checkSession, getUserRight, updateUserRight],
 //delete user
 router.delete('/:id', [checkSession, getUserRight, deleteUserRight], 
     asyncMiddleware(deleteUser)
+);
+
+//activate user
+router.post('/activate', [checkSession, activateUserRight], 
+    asyncMiddleware(activateUse)
 );
 
 //change password

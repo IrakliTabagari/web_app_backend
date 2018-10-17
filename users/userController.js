@@ -178,6 +178,32 @@ async function deleteUser(req, res){
     res.send(user);
 }
 
+//activate user
+async function activateUse(req, res){
+
+    let activeState = await State.findOne({ name: "Active" });
+    let inactiveState = await State.findOne({ name: "Inactive" });
+
+    let user = await User.findByIdAndUpdate(req.body._id,
+        {
+            state: activeState            
+        }, { new: true })
+        .select('-password');    
+    if(!user) return res.status(404).send({warning: 'User with this id does not exists'});
+
+    let sessions = await Session.find({'user._id': req.params.id});
+    
+    if(sessions.length>0){     
+        sessions.forEach(async session => {
+            await Session.findByIdAndUpdate(session._id,
+                {
+                    state: inactiveState
+                }, { new: true });
+        });
+    }
+    res.send(user);
+}
+
 // change password
 async function changePassword(req, res){
 
@@ -253,3 +279,4 @@ exports.updateUser      = updateUser;
 exports.deleteUser      = deleteUser;
 exports.changePassword  = changePassword;
 exports.resetPassword   = resetPassword;
+exports.activateUse   = activateUse;
