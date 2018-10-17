@@ -36,7 +36,8 @@ router.post('/createDB', asyncMiddleware(async (req, res) => {
         new Right({name:"updateUserRights",description:"update user's Rights"}),
         new Right({name:"getRights",description:"get all rights"}),
         new Right({name:"resetPassword",description:"reset password - when nobody knows current password"}),
-        new Right({name:"changePassword",description:"change password - when you know old password"}) 
+        new Right({name:"changePassword",description:"change password - when you know old password"}) ,
+        new Right({name:"activateUser",description:"Activate inactive User"}) 
     ];
     await newRights.forEach(right => right.save());
     // let newRight;
