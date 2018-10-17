@@ -25,7 +25,7 @@ async function login(req, res){
     // hashing password
 
     if(!req.body.userName || !req.body.password){ 
-        return res.status(400).send('invalid request');
+        return res.status(400).send({warning: 'invalid request'});
     }
 
     let user = await User.findOne({ userName: req.body.userName});
@@ -35,7 +35,7 @@ async function login(req, res){
 
     let validPassword = await bcrypt.compare(req.body.password, user.password);
     
-    if(!user || !validPassword || user.state.name !== "Active") return res.status(404).send('User with this userName and password does not exists');
+    if(!user || !validPassword || user.state.name !== "Active") return res.status(404).send({warning: 'User with this userName and password does not exists'});
     
     let activeState = await State.findOne({ name: "Active" });
 
@@ -72,7 +72,7 @@ async function logOut(req, res){
             }, { new: true });
         return res.send(session);
     }else{
-        return  res.status(404).send('Session with this id or username does not exists');
+        return  res.status(404).send({warning: 'Session with this id or username does not exists'});
     }    
 }
 
@@ -127,7 +127,7 @@ async function addUser(req, res){
 			.run();
 		res.send(newUser);
 	}catch(ex){
-		res.status(500).send('Saving new user failed.');
+		res.status(500).send({warning: 'Saving new user failed.'});
 	}
     
 }
@@ -135,17 +135,20 @@ async function addUser(req, res){
 //update user
 async function updateUser(req, res){
 
+    let anotherUser = await User.findOne({ email: req.body.email });
+    if(anotherUser && anotherUser._id != req.body._id) return res.status(400).send({warning: 'User with this email already exists'});
+
     // hashing password
 	const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
     
     let user = await User.findByIdAndUpdate(req.params.id,
         {
-            password: hashedPassword,
+           // password: hashedPassword,
             email: req.body.email            
         }, { new: true })
         .select('-password');    
-    if(!user) return res.status(404).send('User with this id does not exists');
+    if(!user) return res.status(404).send({warning: 'User with this id does not exists'});
     
     res.send(user);
 }
@@ -160,7 +163,7 @@ async function deleteUser(req, res){
             state: inactiveState            
         }, { new: true })
         .select('-password');    
-    if(!user) return res.status(404).send('User with this id does not exists');
+    if(!user) return res.status(404).send({warning: 'User with this id does not exists'});
 
     let sessions = await Session.find({'user._id': req.params.id});
     
@@ -181,8 +184,8 @@ async function changePassword(req, res){
     let user = await User.findOne({ userName: req.body.userName });
     let validPassword = await bcrypt.compare(req.body.oldPassword, user.password);
     
-    if(!user || !validPassword ) return res.status(404).send('User with this userName and password does not exists');
-    if(!req.body.newPassword || req.body.newPassword === "") return res.status(400).send('new password is invalid');
+    if(!user || !validPassword ) return res.status(404).send({warning: 'User with this userName and password does not exists'});
+    if(!req.body.newPassword || req.body.newPassword === "") return res.status(400).send({warning: 'new password is invalid'});
 
     const salt = await bcrypt.genSalt(10);
     const hashedNewPassword = await bcrypt.hash(req.body.newPassword, salt);
@@ -212,8 +215,8 @@ async function changePassword(req, res){
 async function resetPassword(req, res){
 
     let user = await User.findOne({ userName: req.body.userName });
-    if(!user) return res.status(404).send('User with this userName and password does not exists');
-    if(!req.body.password || req.body.password === "") return res.status(400).send('new password is invalid');
+    if(!user) return res.status(404).send({warning: 'User with this userName and password does not exists'});
+    if(!req.body.password || req.body.password === "") return res.status(400).send({warning: 'new password is invalid'});
     
     // hashing password
 	const salt = await bcrypt.genSalt(10);

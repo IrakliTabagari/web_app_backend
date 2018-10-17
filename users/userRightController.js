@@ -17,7 +17,7 @@ async function updateUserRights(req, res){
 
     let user = await User.findByIdAndUpdate(req.params.id,
         {
-            rights: req.body
+            rights: req.body.rights
         }, { new: true });    
     if(!user) return res.status(404).send('User with this id does not exists');
     
