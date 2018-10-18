@@ -35,11 +35,10 @@ const userSchema = new mongoose.Schema({
 function validateUser(user){
     const schema = {
         userName: Joi.string().min(5).max(120).required(),
-        password: Joi.string().min(6).max(1024).required(),
+        password: Joi.string().min(5).max(1024).required(),
         email: Joi.string().min(6).max(255).required().email()
     };
-
-    return Joi.validate(user, schema);
+    return Joi.validate(user, schema);    
 }
 
 //User Class from Schema

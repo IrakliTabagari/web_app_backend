@@ -94,8 +94,16 @@ async function getHashedPass(req, res){
 
 //insert new User
 async function addUser(req, res){
-    //const error = await validateUser(req.body);
-    //if(error) return res.status(400).send(error.details[0].message);
+    console.log(1);
+    try{
+        await validateUser(req.body);
+    }catch(error){
+        if(error) return res.status(400).send({warning: error.details[0].message});
+    }
+    
+    console.log(error);
+    
+    console.log(2);
         
     let user = await User.findOne({ userName: req.body.userName });
     if(user) return res.status(400).send({warning: 'User with this user name already exists'});
