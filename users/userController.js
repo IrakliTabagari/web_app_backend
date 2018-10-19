@@ -226,6 +226,7 @@ async function changePassword(req, res){
         }, { new: true })
         .select('-password');
 
+    /* Deactivate all sessions of this user
     let inactiveState = await State.findOne({ name: "Inactive" });
 
     let sessions = await Session.find({'user._id': user._id});
@@ -238,6 +239,7 @@ async function changePassword(req, res){
                 }, { new: true });
         });
     }
+    */
     res.send(user);
 }
 
